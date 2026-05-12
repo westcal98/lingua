@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Lingua — Language Learning</title>
+
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#F6A623">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lingua">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css?v=1.0">
+</head>
+<body>
+
+  <!-- ── VIEW 1: LANGUAGE SELECT ── -->
+  <div id="view-language-select" class="view full-screen-view">
+    <div class="language-select-header">
+      <div class="ls-logo">🌐 <span class="serif amber">Lingua</span></div>
+      <p class="ls-tagline">Your personal path to fluency</p>
+    </div>
+    <div id="language-grid" class="language-grid"></div>
+  </div>
+
+  <!-- ── VIEW 2: LEVEL SELECT ── -->
+  <div id="view-level-select" class="view full-screen-view" style="display:none">
+    <div class="level-select-header">
+      <div id="level-lang-flag" class="level-flag"></div>
+      <h2 class="serif">Your <span id="level-lang-name"></span> level?</h2>
+      <p class="muted">Choose your current level to get personalized content</p>
+    </div>
+    <div id="level-grid" class="level-grid"></div>
+  </div>
+
+  <!-- ── MAIN APP WRAPPER (shown after onboarding) ── -->
+  <div id="app-wrapper" style="display:none">
+
+    <!-- ── VIEW 3: DASHBOARD ── -->
+    <div id="view-home" class="view app-view">
+      <div class="view-header">
+        <div class="header-left">
+          <span class="serif amber logo-text">Lingua</span>
+          <span id="home-lang-flag" class="header-flag"></span>
+          <span id="home-level-badge" class="level-badge"></span>
+        </div>
+        <div class="header-right">
+          <span id="home-xp" class="xp-display"></span>
+        </div>
+      </div>
+      <div class="view-content">
+        <div id="streak-card" class="streak-card glow-card">
+          <div class="streak-left">
+            <span class="streak-icon">🔥</span>
+            <div>
+              <div id="streak-count" class="streak-num"></div>
+              <div class="streak-label">day streak</div>
+            </div>
+          </div>
+          <div class="streak-divider"></div>
+          <div class="streak-right">
+            <div id="mastered-count" class="streak-num"></div>
+            <div class="streak-label">words mastered</div>
+          </div>
+        </div>
+
+        <div class="quick-grid">
+          <div class="quick-card hot-card" data-nav="talk">
+            <div class="quick-icon">💬</div>
+            <div class="quick-title">Speak with AI</div>
+            <div id="quick-talk-sub" class="quick-sub"></div>
+          </div>
+          <div class="quick-card" data-nav="cards">
+            <div class="quick-icon">🃏</div>
+            <div class="quick-title">Flashcards</div>
+            <div id="quick-cards-sub" class="quick-sub"></div>
+            <div id="quick-cards-badge" class="card-badge" style="display:none"></div>
+          </div>
+          <div class="quick-card" data-nav="learn">
+            <div class="quick-icon">📚</div>
+            <div class="quick-title">New Lesson</div>
+            <div class="quick-sub">Vocab &amp; grammar</div>
+          </div>
+          <div class="quick-card" data-nav="write">
+            <div class="quick-icon">✍️</div>
+            <div class="quick-title">Writing</div>
+            <div class="quick-sub">Get AI feedback</div>
+          </div>
+        </div>
+
+        <div class="section-label">Level Progress</div>
+        <div class="level-progress-card card">
+          <div class="lp-header">
+            <span id="lp-level-label" class="lp-level"></span>
+            <span id="lp-xp-label" class="lp-xp muted"></span>
+          </div>
+          <div class="progress-bar-track">
+            <div id="lp-bar" class="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <div class="section-label">Learning System</div>
+        <div class="methods-card card">
+          <div class="method-row"><span class="method-icon">🧠</span><div><strong>Spaced Repetition</strong><span class="muted"> — Optimal memory intervals</span></div></div>
+          <div class="method-row"><span class="method-icon">🎯</span><div><strong>Comprehensible Input</strong><span class="muted"> — AI content at your exact level</span></div></div>
+          <div class="method-row"><span class="method-icon">💬</span><div><strong>Active Output</strong><span class="muted"> — Real conversations build fluency</span></div></div>
+          <div class="method-row"><span class="method-icon">✍️</span><div><strong>Writing + Feedback</strong><span class="muted"> — AI corrects grammar &amp; style</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW 4: LESSON BROWSER ── -->
+    <div id="view-learn" class="view app-view" style="display:none">
+      <div class="view-header">
+        <span class="serif amber logo-text">Lessons</span>
+        <span id="learn-lang-sub" class="header-sub muted"></span>
+      </div>
+      <div class="view-content">
+        <div id="level-tabs" class="level-tabs"></div>
+        <div id="lesson-grid" class="lesson-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── VIEW 5: CONVERSATION ── -->
+    <div id="view-talk" class="view app-view" style="display:none">
+      <div id="talk-prestart" class="talk-prestart">
+        <div id="talk-flag" class="talk-flag-large"></div>
+        <div id="talk-persona-name" class="talk-persona-name serif"></div>
+        <div id="talk-persona-desc" class="talk-persona-desc muted"></div>
+        <div id="talk-level-note" class="talk-level-note info-card"></div>
+        <div class="tips-card card">
+          <div class="tips-title">💡 Conversation Tips</div>
+          <ul class="tips-list">
+            <li>Don't worry about perfect grammar — just speak naturally</li>
+            <li>Ask questions to keep the conversation flowing</li>
+            <li>If you don't understand, ask your partner to repeat or explain</li>
+            <li>Try to use new vocabulary from your lessons</li>
+          </ul>
+        </div>
+        <button id="start-conversation-btn" class="btn-primary btn-full">Start Conversation</button>
+      </div>
+
+      <div id="talk-chat" class="talk-chat" style="display:none">
+        <div class="chat-header">
+          <button id="chat-back-btn" class="btn-ghost">← Back</button>
+          <span id="chat-persona-title" class="chat-title"></span>
+          <button id="chat-reset-btn" class="btn-ghost-small">Reset</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-bar">
+          <input id="chat-input" type="text" placeholder="Type your message…" autocomplete="off">
+          <button id="chat-send-btn" class="btn-send">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VIEW 6: FLASHCARDS ── -->
+    <div id="view-cards" class="view app-view" style="display:none">
+      <div class="view-header">
+        <span class="serif amber logo-text">Flashcards</span>
+      </div>
+      <div id="cards-content" class="view-content"></div>
+    </div>
+
+    <!-- ── VIEW 7: WRITING PRACTICE ── -->
+    <div id="view-write" class="view app-view" style="display:none">
+      <div class="view-header">
+        <span class="serif amber logo-text">Writing Practice</span>
+        <span id="write-lang-sub" class="header-sub muted"></span>
+      </div>
+      <div class="view-content">
+        <div class="write-prompt-bar">
+          <div id="write-prompt-card" class="write-prompt-card info-card"></div>
+          <button id="write-new-prompt-btn" class="btn-ghost-small">New →</button>
+        </div>
+        <textarea id="write-textarea" class="write-textarea" placeholder="Write in your target language here…" rows="8"></textarea>
+        <div id="write-char-count" class="char-count muted">0 characters</div>
+        <button id="write-submit-btn" class="btn-primary btn-full" disabled>Get AI Feedback →</button>
+        <div id="write-feedback" class="write-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ── VIEW 8: STATS ── -->
+    <div id="view-stats" class="view app-view" style="display:none">
+      <div class="view-header">
+        <span class="serif amber logo-text">Progress</span>
+        <button id="settings-open-btn" class="btn-ghost-small">⚙️ Settings</button>
+      </div>
+      <div class="view-content">
+        <div id="stats-lang-label" class="stats-lang-label muted"></div>
+        <div id="stats-grid" class="stats-grid"></div>
+
+        <div class="section-label">CEFR Journey</div>
+        <div id="cefr-journey" class="cefr-journey"></div>
+
+        <div class="section-label">Vocabulary Deck</div>
+        <div id="vocab-breakdown" class="vocab-breakdown card"></div>
+      </div>
+    </div>
+
+    <!-- ── BOTTOM NAV ── -->
+    <nav id="bottom-nav" class="bottom-nav">
+      <button class="nav-tab active" data-view="home"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+      <button class="nav-tab" data-view="learn"><span class="nav-icon">📚</span><span class="nav-label">Learn</span></button>
+      <button class="nav-tab" data-view="talk"><span class="nav-icon">💬</span><span class="nav-label">Talk</span></button>
+      <button class="nav-tab" data-view="cards"><span class="nav-icon">🃏</span><span class="nav-label">Cards</span><span id="cards-nav-badge" class="nav-badge" style="display:none"></span></button>
+      <button class="nav-tab" data-view="write"><span class="nav-icon">✍️</span><span class="nav-label">Write</span></button>
+      <button class="nav-tab" data-view="stats"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></button>
+    </nav>
+
+  </div><!-- end #app-wrapper -->
+
+  <!-- ── LESSON FLOW OVERLAY ── -->
+  <div id="lesson-overlay" class="overlay" style="display:none">
+    <div id="lesson-overlay-content" class="overlay-content"></div>
+  </div>
+
+  <!-- ── SETTINGS PANEL ── -->
+  <div id="settings-overlay" class="overlay settings-overlay" style="display:none">
+    <div class="settings-panel">
+      <div class="settings-header">
+        <span class="serif amber">Settings</span>
+        <button id="settings-close-btn" class="btn-ghost-small">✕</button>
+      </div>
+      <div id="settings-content" class="settings-content"></div>
+    </div>
+  </div>
+
+  <!-- ── CONGRATS TOAST ── -->
+  <div id="congrats-toast" class="congrats-toast" style="display:none"></div>
+
+  <script src="app.js?v=1.0"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "lingua",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered language learning PWA on Cloudflare Workers",
+  "main": "src/worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.4"
+  }
+}
